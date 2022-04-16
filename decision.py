@@ -18,15 +18,18 @@ def compute_odds(odd_hit,odd_miss):
     else:
         return (adjusted_hit-house_edge)
 
-def is_profitable(odds_list):
+def get_multiplier(odds_list):
     num_bets = len(odds_list)
-    multiplier = 1
     if num_bets == 2:
         multiplier = 3
     elif num_bets == 3:
         multiplier = 5
     elif num_bets == 4:
         multiplier = 10
+    return multiplier
+
+def is_profitable(odds_list):
+    multiplier = get_multiplier(odds_list)
     adjusted_odds = []
     for i in odds_list:
         odds_hit_a = i[0]
@@ -42,3 +45,6 @@ def is_profitable(odds_list):
     else:
         return False,ev
         
+def kelly(bankroll,adjusted_hit,odds_list):
+    p = adjusted_hit + (1-adjusted_hit)/(get_multiplier(odds_list)-1)
+    return bankroll*p
